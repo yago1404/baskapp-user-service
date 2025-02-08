@@ -45,10 +45,14 @@ public class UserService {
 
         if (user != null) {
             Boolean isCorrectPassword = BaskappPasswordUtil.validatePassword(loginDto.getPassword(), user.getPassword());
+
             if (isCorrectPassword) {
+                user.setRefreshToken(authUtil.generateRefreshToken());
+                this.userRepository.save(user);
+
                 return new LoggedDto(
                         authUtil.generateJwt(user.getId().toString()),
-                        authUtil.generateRefreshToken()
+                        user.getRefreshToken()
                 );
             }
         }
