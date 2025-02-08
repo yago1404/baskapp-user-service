@@ -1,6 +1,7 @@
 package com.baskapp.baskappsocial.services;
 
 import com.baskapp.baskappsocial.dtos.request.CreateUserDto;
+import com.baskapp.baskappsocial.dtos.request.LoginDto;
 import com.baskapp.baskappsocial.dtos.response.LoggedDto;
 import com.baskapp.baskappsocial.models.User;
 import com.baskapp.baskappsocial.repositories.UserRepository;
@@ -37,5 +38,21 @@ public class UserService {
                 ),
                 this.authUtil.generateRefreshToken()
         );
+    }
+
+    public LoggedDto doLogin(LoginDto loginDto) {
+        User user = this.userRepository.findByEmail(loginDto.getEmail());
+
+        if (user != null) {
+            Boolean isCorrectPassword = BaskappPasswordUtil.validatePassword(loginDto.getPassword(), user.getPassword());
+            if (isCorrectPassword) {
+                return new LoggedDto(
+                        authUtil.generateJwt(user.getId().toString()),
+                        authUtil.generateRefreshToken()
+                );
+            }
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Email ou senha incorretos");
     }
 }
