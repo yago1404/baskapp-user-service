@@ -26,4 +26,7 @@ public class User {
     @OneToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    @Column
+    private String refreshToken;
 }

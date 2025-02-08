@@ -1,6 +1,7 @@
 package com.baskapp.baskappsocial.controllers;
 
 import com.baskapp.baskappsocial.dtos.request.CreateUserDto;
+import com.baskapp.baskappsocial.dtos.request.LoginDto;
 import com.baskapp.baskappsocial.dtos.response.LoggedDto;
 import com.baskapp.baskappsocial.dtos.response.ResponseBodyDto;
 import com.baskapp.baskappsocial.services.UserService;
@@ -24,8 +25,19 @@ public class UserController {
     @PostMapping
     public ResponseEntity<ResponseBodyDto<LoggedDto>> createUser(@Valid @RequestBody CreateUserDto user) {
         LoggedDto tokens = userService.createUser(user);
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseBodyDto<>("success", 201, tokens));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ResponseBodyDto<LoggedDto>> login(@Valid @RequestBody LoginDto login) {
+        System.out.println("Login");
+        LoggedDto tokens = this.userService.doLogin(login);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseBodyDto<>("success", 200, tokens));
     }
 }
