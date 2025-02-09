@@ -33,7 +33,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseBodyDto<LoggedDto>> login(@Valid @RequestBody LoginDto login) {
-        System.out.println("Login");
         LoggedDto tokens = this.userService.doLogin(login);
 
         return ResponseEntity
