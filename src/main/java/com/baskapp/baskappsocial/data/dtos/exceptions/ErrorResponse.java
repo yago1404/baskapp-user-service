@@ -1,9 +1,7 @@
-package com.baskapp.baskappsocial.dtos.exceptions;
+package com.baskapp.baskappsocial.data.dtos.exceptions;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter @Setter
 public class ErrorResponse {

@@ -1,4 +1,4 @@
-package com.baskapp.baskappsocial.models;
+package com.baskapp.baskappsocial.data.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

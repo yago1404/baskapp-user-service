@@ -1,4 +1,4 @@
-package com.baskapp.baskappsocial.dtos.response;
+package com.baskapp.baskappsocial.data.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

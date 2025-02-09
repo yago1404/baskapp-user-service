@@ -1,6 +1,6 @@
-package com.baskapp.baskappsocial.repositories;
+package com.baskapp.baskappsocial.data.repositories;
 
-import com.baskapp.baskappsocial.models.User;
+import com.baskapp.baskappsocial.data.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

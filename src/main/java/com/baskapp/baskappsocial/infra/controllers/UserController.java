@@ -1,10 +1,10 @@
-package com.baskapp.baskappsocial.controllers;
+package com.baskapp.baskappsocial.infra.controllers;
 
-import com.baskapp.baskappsocial.dtos.request.CreateUserDto;
-import com.baskapp.baskappsocial.dtos.request.LoginDto;
-import com.baskapp.baskappsocial.dtos.response.LoggedDto;
-import com.baskapp.baskappsocial.dtos.response.ResponseBodyDto;
-import com.baskapp.baskappsocial.services.UserService;
+import com.baskapp.baskappsocial.data.dtos.request.CreateUserDto;
+import com.baskapp.baskappsocial.data.dtos.request.LoginDto;
+import com.baskapp.baskappsocial.data.dtos.response.LoggedDto;
+import com.baskapp.baskappsocial.data.dtos.response.ResponseBodyDto;
+import com.baskapp.baskappsocial.application.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,12 +1,12 @@
-package com.baskapp.baskappsocial.services;
+package com.baskapp.baskappsocial.application.services;
 
-import com.baskapp.baskappsocial.dtos.request.CreateUserDto;
-import com.baskapp.baskappsocial.dtos.request.LoginDto;
-import com.baskapp.baskappsocial.dtos.response.LoggedDto;
-import com.baskapp.baskappsocial.models.User;
-import com.baskapp.baskappsocial.repositories.UserRepository;
-import com.baskapp.baskappsocial.utils.BaskappAuthUtil;
-import com.baskapp.baskappsocial.utils.BaskappPasswordUtil;
+import com.baskapp.baskappsocial.data.dtos.request.CreateUserDto;
+import com.baskapp.baskappsocial.data.dtos.request.LoginDto;
+import com.baskapp.baskappsocial.data.dtos.response.LoggedDto;
+import com.baskapp.baskappsocial.data.models.User;
+import com.baskapp.baskappsocial.data.repositories.UserRepository;
+import com.baskapp.baskappsocial.application.utils.BaskappAuthUtil;
+import com.baskapp.baskappsocial.application.utils.BaskappPasswordUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

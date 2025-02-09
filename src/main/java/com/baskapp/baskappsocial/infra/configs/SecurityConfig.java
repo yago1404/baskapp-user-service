@@ -1,4 +1,4 @@
-package com.baskapp.baskappsocial.configs;
+package com.baskapp.baskappsocial.infra.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.baskapp.baskappsocial.utils;
+package com.baskapp.baskappsocial.application.utils;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

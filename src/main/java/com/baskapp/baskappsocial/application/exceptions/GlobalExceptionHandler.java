@@ -1,6 +1,6 @@
-package com.baskapp.baskappsocial.exceptions;
+package com.baskapp.baskappsocial.application.exceptions;
 
-import com.baskapp.baskappsocial.dtos.exceptions.ErrorResponse;
+import com.baskapp.baskappsocial.data.dtos.exceptions.ErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

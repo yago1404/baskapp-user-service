@@ -1,4 +1,4 @@
-package com.baskapp.baskappsocial.controllers;
+package com.baskapp.baskappsocial.infra.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

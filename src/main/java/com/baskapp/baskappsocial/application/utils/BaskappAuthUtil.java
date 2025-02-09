@@ -1,4 +1,4 @@
-package com.baskapp.baskappsocial.utils;
+package com.baskapp.baskappsocial.application.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
