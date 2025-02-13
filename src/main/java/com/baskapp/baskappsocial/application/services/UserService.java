@@ -59,4 +59,20 @@ public class UserService {
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Email ou senha incorretos");
     }
+
+    public LoggedDto refreshToken(String refreshToken) {
+        User user = this.userRepository.findByRefreshToken(refreshToken);
+
+        if (user != null) {
+            user.setRefreshToken(authUtil.generateRefreshToken());
+            this.userRepository.save(user);
+
+            return new LoggedDto(
+                    authUtil.generateJwt(user.getId().toString()),
+                    user.getRefreshToken()
+            );
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Refresh token invalido");
+    }
 }

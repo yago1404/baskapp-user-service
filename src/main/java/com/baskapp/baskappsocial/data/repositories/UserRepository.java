@@ -15,4 +15,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("SELECT u FROM appUser u WHERE u.email = :email")
     User findByEmail(@Param("email") String email);
+
+    @Query("SELECT u from appUser u WHERE u.refreshToken = :refreshToken")
+    User findByRefreshToken(@Param("refreshToken") String refreshToken);
 }

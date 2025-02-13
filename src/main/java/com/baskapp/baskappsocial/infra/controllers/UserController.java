@@ -2,6 +2,7 @@ package com.baskapp.baskappsocial.infra.controllers;
 
 import com.baskapp.baskappsocial.data.dtos.request.CreateUserDto;
 import com.baskapp.baskappsocial.data.dtos.request.LoginDto;
+import com.baskapp.baskappsocial.data.dtos.request.RefreshTokenDto;
 import com.baskapp.baskappsocial.data.dtos.response.LoggedDto;
 import com.baskapp.baskappsocial.data.dtos.response.ResponseBodyDto;
 import com.baskapp.baskappsocial.application.services.UserService;
@@ -34,6 +35,15 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<ResponseBodyDto<LoggedDto>> login(@Valid @RequestBody LoginDto login) {
         LoggedDto tokens = this.userService.doLogin(login);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseBodyDto<>("success", 200, tokens));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<ResponseBodyDto<LoggedDto>> refreshToken(@Valid @RequestBody RefreshTokenDto refreshToken) {
+        LoggedDto tokens = this.userService.refreshToken(refreshToken.getRefreshToken());
 
         return ResponseEntity
                 .status(HttpStatus.OK)
