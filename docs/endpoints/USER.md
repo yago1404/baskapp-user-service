@@ -103,3 +103,41 @@ Email ou senha incorretos (404):
   "path": "/user/login"
 }
 ```
+
+---
+
+## POST /refresh
+
+Refaz JWT do usuário quando expirado
+
+body
+```JSON
+{
+  "refreshToken": "eac65a12-7118-4c1c-9596-d293cbfabd73"
+}
+```
+
+**Sucesso**
+```JSON
+{
+    "message": "success",
+    "statusCode": 200,
+    "data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkZjJhN2Y4Ni0xNDZhLTQxYjYtOTIwYi00NDQwM2JhYjM1MDgiLCJleHAiOjE3Mzk3Mzk0NTh9.pLc-tEvUJ2c0QgsCW9nZq63-WFhn_A53itdTUqCXKGc",
+        "refreshToken": "ae680a6e-c2c3-48d4-aed3-8f4b26ead332"
+    }
+}
+```
+
+**Erro**
+
+Refresh token inválido (404)
+```JSON
+{
+    "timestamp": "2025-02-15T20:58:07.399+00:00",
+    "status": 404,
+    "error": "Not Found",
+    "message": "Refresh token invalido",
+    "path": "/user/refresh"
+}
+```

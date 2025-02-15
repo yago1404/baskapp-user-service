@@ -4,6 +4,7 @@ import com.baskapp.baskappsocial.data.dtos.request.CreateProfileDto;
 import com.baskapp.baskappsocial.data.dtos.response.ProfileDto;
 import com.baskapp.baskappsocial.data.models.Profile;
 import com.baskapp.baskappsocial.data.models.User;
+import com.baskapp.baskappsocial.data.models.enums.UserRule;
 import com.baskapp.baskappsocial.data.repositories.ProfileRepository;
 import com.baskapp.baskappsocial.data.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class ProfileService {
     public ProfileDto createProfile(User user, CreateProfileDto createProfileDto) {
         if (this.profileRepository.existsByUser(user)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Esse usuário já possui um perfil");
+        }
+
+        if (createProfileDto.getRule() == UserRule.PLAYER && (createProfileDto.getPosition() == null || createProfileDto.getHeight() == 0 || createProfileDto.getBirthday() == null || createProfileDto.getCellphone() == null)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Posição, altura, data de nascimento e contato são obrigatórios para criar um perfil de jogador");
         }
 
         Profile profile = new Profile();
