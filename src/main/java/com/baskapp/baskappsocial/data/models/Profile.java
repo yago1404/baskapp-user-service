@@ -1,5 +1,7 @@
 package com.baskapp.baskappsocial.data.models;
 
+import com.baskapp.baskappsocial.data.models.enums.PlayerPosition;
+import com.baskapp.baskappsocial.data.models.enums.UserRule;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,10 +30,12 @@ public class Profile {
 
     private int height;
 
-    private String position;
+    @Enumerated(EnumType.STRING)
+    private PlayerPosition position;
 
     @Column(nullable = false)
-    private String rule;
+    @Enumerated(EnumType.STRING)
+    private UserRule rule;
 
     private String picture;
 
