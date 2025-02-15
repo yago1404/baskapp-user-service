@@ -21,7 +21,7 @@ public class ProfileService {
 
     public ProfileDto createProfile(User user, CreateProfileDto createProfileDto) {
         if (this.profileRepository.existsByUser(user)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Esse usuário já tem um perfil associado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Esse usuário já possui um perfil");
         }
 
         Profile profile = new Profile();
