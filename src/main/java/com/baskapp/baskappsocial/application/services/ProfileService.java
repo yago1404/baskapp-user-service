@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 @Component
 public class ProfileService {
     @Autowired
@@ -19,6 +21,20 @@ public class ProfileService {
 
     @Autowired
     private UserRepository userRepository;
+
+    public ProfileDto getProfile(User user) {
+        if (user.getProfile() == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não possui um perfil associado");
+        }
+
+        Optional<Profile> profile = this.profileRepository.findById(user.getProfile().getId());
+
+        if (profile.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "perfil não encontrado");
+        }
+
+        return ProfileDto.fromModel(profile.get());
+    }
 
     public ProfileDto createProfile(User user, CreateProfileDto createProfileDto) {
         if (this.profileRepository.existsByUser(user)) {

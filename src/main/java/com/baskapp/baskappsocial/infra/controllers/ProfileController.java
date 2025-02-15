@@ -9,6 +9,7 @@ import com.baskapp.baskappsocial.infra.notations.Authenticated;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +21,11 @@ public class ProfileController {
 
     @GetMapping
     @Authenticated
-    public ResponseEntity<ResponseBodyDto<String>> getProfile(HttpServletRequest request) {
+    public ResponseEntity<ResponseBodyDto<ProfileDto>> getProfile(HttpServletRequest request) {
         User user = (User) request.getAttribute("authenticatedUser");
+        ProfileDto profileDto = this.profileService.getProfile(user);
 
-        return ResponseEntity.ok().body(new ResponseBodyDto<>("success", 200, user.getId().toString()));
+        return ResponseEntity.ok().body(new ResponseBodyDto<>("success", 200, profileDto));
     }
 
     @PostMapping
@@ -32,6 +34,6 @@ public class ProfileController {
         User user = (User) request.getAttribute("authenticatedUser");
         ProfileDto profileDto = this.profileService.createProfile(user, profile);
 
-        return ResponseEntity.ok().body(new ResponseBodyDto<>("success", 200, profileDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBodyDto<>("success", 200, profileDto));
     }
 }
