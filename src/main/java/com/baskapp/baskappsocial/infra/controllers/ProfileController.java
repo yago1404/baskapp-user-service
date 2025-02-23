@@ -8,6 +8,7 @@ import com.baskapp.baskappsocial.data.dtos.response.ProfilesDto;
 import com.baskapp.baskappsocial.data.dtos.response.ResponseBodyDto;
 import com.baskapp.baskappsocial.data.models.User;
 import com.baskapp.baskappsocial.infra.notations.Authenticated;
+import com.baskapp.baskappsocial.infra.notations.InternalRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,14 @@ public class ProfileController {
         ProfilesDto profilesDto = this.profileService.getOpenProfiles(PageRequest.of(page - 1, size));
 
         return ResponseEntity.ok().body(new ResponseBodyDto<>("success", 200, profilesDto));
+    }
+
+    @InternalRequest
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseBodyDto<ProfileDto>> getProfileById(@PathVariable("id") String id) {
+        ProfileDto profileDto = this.profileService.getProfileById(id);
+
+        return ResponseEntity.ok().body(new ResponseBodyDto<>("success", 200, profileDto));
     }
 
     @PostMapping

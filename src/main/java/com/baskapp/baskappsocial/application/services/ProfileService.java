@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class ProfileService {
@@ -103,5 +104,15 @@ public class ProfileService {
         }
 
         return new ProfilesDto(profilesList);
+    }
+
+    public ProfileDto getProfileById(String id) {
+        Optional<Profile> profile = this.profileRepository.findById(UUID.fromString(id));
+
+        if (profile.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Perfil não encontrado");
+        }
+
+        return ProfileDto.fromModel(profile.get());
     }
 }

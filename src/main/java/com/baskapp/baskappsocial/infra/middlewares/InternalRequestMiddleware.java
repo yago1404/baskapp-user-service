@@ -27,7 +27,7 @@ public class InternalRequestMiddleware {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Recurso acessável apenas internamente");
         }
 
-        String internalToken = internalAuthorization.substring(7);
+        String internalToken = internalAuthorization.substring(9);
         if (!internalToken.equals(token)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Basic Token invalido");
         }
