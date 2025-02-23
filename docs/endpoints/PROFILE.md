@@ -121,6 +121,62 @@ Usuário sem perfil associado (404)
 
 ---
 
+## GET /all
+
+Recupera os perfis dos usuários que estão com status open
+
+**Sucesso**
+```JSON
+{
+  "message": "success",
+  "statusCode": 200,
+  "data": {
+    "profiles": [
+      {
+        "id": "767366c8-8598-4308-b57d-af3422d296eb",
+        "name": "Coach 1",
+        "cellphone": null,
+        "birthday": "2000-04-14T00:00:00.000+00:00",
+        "height": 0,
+        "position": null,
+        "rule": "COACH",
+        "picture": null,
+        "open": true
+      },
+      {
+        "id": "0a7c8870-955e-4f99-99ce-12c80b7f1216",
+        "name": "Jogador 1",
+        "cellphone": "82988509560",
+        "birthday": "2000-04-14T00:00:00.000+00:00",
+        "height": 185,
+        "position": "POINT_GUARD",
+        "rule": "PLAYER",
+        "picture": null,
+        "open": true
+      },
+      {
+        "id": "73632e20-368d-4eec-bc25-67de611fc381",
+        "name": "Jogador 1",
+        "cellphone": "82988509560",
+        "birthday": "2000-04-14T00:00:00.000+00:00",
+        "height": 185,
+        "position": "POINT_GUARD",
+        "rule": "PLAYER",
+        "picture": null,
+        "open": true
+      }
+    ]
+  }
+}
+```
+
+Em caso de não haver perfis com status open, a lista de perfis vem vazia mas com status 200
+
+- **open**: indica se um perfil está apto para ser divulgado
+- **height**: caso venha com o valor 0, indica que a altura do usuário não foi informada, caso o contrario, representa a altura do perfil em centimetros
+
+---
+
 ## PUT
 
 Atualiza o perfil do usuário
