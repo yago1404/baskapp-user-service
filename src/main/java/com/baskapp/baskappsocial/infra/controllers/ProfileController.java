@@ -11,6 +11,7 @@ import com.baskapp.baskappsocial.infra.notations.Authenticated;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,11 @@ public class ProfileController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<ResponseBodyDto<ProfilesDto>> getOpenProfiles() {
-        ProfilesDto profilesDto = this.profileService.getOpenProfiles();
+    public ResponseEntity<ResponseBodyDto<ProfilesDto>> getOpenProfiles(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        ProfilesDto profilesDto = this.profileService.getOpenProfiles(PageRequest.of(page - 1, size));
 
         return ResponseEntity.ok().body(new ResponseBodyDto<>("success", 200, profilesDto));
     }

@@ -10,6 +10,8 @@ import com.baskapp.baskappsocial.data.models.enums.UserRule;
 import com.baskapp.baskappsocial.data.repositories.ProfileRepository;
 import com.baskapp.baskappsocial.data.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -92,9 +94,9 @@ public class ProfileService {
         return ProfileDto.fromModel(profile.get());
     }
 
-    public ProfilesDto getOpenProfiles() {
+    public ProfilesDto getOpenProfiles(Pageable pageable) {
         List<ProfileDto> profilesList = new ArrayList<>();
-        List<Profile> profiles = this.profileRepository.findByOpen(true);
+        Page<Profile> profiles = this.profileRepository.findByOpen(true, pageable);
 
         for (Profile profile : profiles) {
             profilesList.add(ProfileDto.fromModel(profile));
