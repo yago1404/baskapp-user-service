@@ -125,6 +125,14 @@ Usuário sem perfil associado (404)
 
 Recupera os perfis dos usuários que estão com status open
 
+**QueryParams**
+```
+?page=1&size=10
+```
+
+- **page**: página atual da paginação começando no 1, default 1
+- **size**: limite de itens por página, default 10
+
 **Sucesso**
 ```JSON
 {
