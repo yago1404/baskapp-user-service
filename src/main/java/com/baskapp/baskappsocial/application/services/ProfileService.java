@@ -65,12 +65,11 @@ public class ProfileService {
     }
 
     public ProfileDto changeProfile(User user, UpdateProfileDto updateProfile) {
-        Optional<User> appUser = this.userRepository.findById(user.getId());
-        if (appUser.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
+        if (!this.profileRepository.existsByUser(user)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não possui perfil");
         }
 
-        Optional<Profile> profile = this.profileRepository.findById(appUser.get().getProfile().getId());
+        Optional<Profile> profile = this.profileRepository.findById(user.getProfile().getId());
         if (profile.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Perfil não encontrado");
         }
@@ -84,8 +83,8 @@ public class ProfileService {
 
         this.profileRepository.save(profile.get());
 
-        appUser.get().setProfile(profile.get());
-        this.userRepository.save(appUser.get());
+        user.setProfile(profile.get());
+        this.userRepository.save(user);
 
         return ProfileDto.fromModel(profile.get());
     }
