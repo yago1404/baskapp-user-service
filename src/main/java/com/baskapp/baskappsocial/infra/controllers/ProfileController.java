@@ -4,6 +4,7 @@ import com.baskapp.baskappsocial.application.services.ProfileService;
 import com.baskapp.baskappsocial.data.dtos.request.CreateProfileDto;
 import com.baskapp.baskappsocial.data.dtos.request.UpdateProfileDto;
 import com.baskapp.baskappsocial.data.dtos.response.ProfileDto;
+import com.baskapp.baskappsocial.data.dtos.response.ProfilesDto;
 import com.baskapp.baskappsocial.data.dtos.response.ResponseBodyDto;
 import com.baskapp.baskappsocial.data.models.User;
 import com.baskapp.baskappsocial.infra.notations.Authenticated;
@@ -27,6 +28,13 @@ public class ProfileController {
         ProfileDto profileDto = this.profileService.getProfile(user);
 
         return ResponseEntity.ok().body(new ResponseBodyDto<>("success", 200, profileDto));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<ResponseBodyDto<ProfilesDto>> getOpenProfiles() {
+        ProfilesDto profilesDto = this.profileService.getOpenProfiles();
+
+        return ResponseEntity.ok().body(new ResponseBodyDto<>("success", 200, profilesDto));
     }
 
     @PostMapping

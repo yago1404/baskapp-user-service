@@ -3,6 +3,7 @@ package com.baskapp.baskappsocial.application.services;
 import com.baskapp.baskappsocial.data.dtos.request.CreateProfileDto;
 import com.baskapp.baskappsocial.data.dtos.request.UpdateProfileDto;
 import com.baskapp.baskappsocial.data.dtos.response.ProfileDto;
+import com.baskapp.baskappsocial.data.dtos.response.ProfilesDto;
 import com.baskapp.baskappsocial.data.models.Profile;
 import com.baskapp.baskappsocial.data.models.User;
 import com.baskapp.baskappsocial.data.models.enums.UserRule;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -87,5 +90,16 @@ public class ProfileService {
         this.userRepository.save(user);
 
         return ProfileDto.fromModel(profile.get());
+    }
+
+    public ProfilesDto getOpenProfiles() {
+        List<ProfileDto> profilesList = new ArrayList<>();
+        List<Profile> profiles = this.profileRepository.findByOpen(true);
+
+        for (Profile profile : profiles) {
+            profilesList.add(ProfileDto.fromModel(profile));
+        }
+
+        return new ProfilesDto(profilesList);
     }
 }
