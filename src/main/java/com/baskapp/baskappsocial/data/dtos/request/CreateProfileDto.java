@@ -18,9 +18,10 @@ import java.util.Date;
 @Getter @Setter
 public class CreateProfileDto {
     @NotBlank(message = "Nome é um atributo obrigatório")
+    @Pattern(regexp = "^(\\S+\\s+\\S+.*)$", message = "O nome deve conter pelo menos nome e sobrenome")
     private String name;
 
-    @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?(9\\d{4})[-.\\s]?(\\d{4})$")
+    @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?(9\\d{4})[-.\\s]?(\\d{4})$", message = "Celular deve estar no formato valido")
     private String cellphone;
 
     @NotNull(message = "Data de nascimento é um atributo obrigatório")
