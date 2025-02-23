@@ -1,6 +1,7 @@
 package com.baskapp.baskappsocial.application.services;
 
 import com.baskapp.baskappsocial.data.dtos.request.CreateProfileDto;
+import com.baskapp.baskappsocial.data.dtos.request.UpdateProfileDto;
 import com.baskapp.baskappsocial.data.dtos.response.ProfileDto;
 import com.baskapp.baskappsocial.data.models.Profile;
 import com.baskapp.baskappsocial.data.models.User;
@@ -61,5 +62,31 @@ public class ProfileService {
         this.userRepository.save(user);
 
         return ProfileDto.fromModel(profile);
+    }
+
+    public ProfileDto changeProfile(User user, UpdateProfileDto updateProfile) {
+        Optional<User> appUser = this.userRepository.findById(user.getId());
+        if (appUser.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
+        }
+
+        Optional<Profile> profile = this.profileRepository.findById(appUser.get().getProfile().getId());
+        if (profile.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Perfil não encontrado");
+        }
+
+        if (updateProfile.getName() != null) profile.get().setName(updateProfile.getName());
+        if (updateProfile.getCellphone() != null) profile.get().setCellphone(updateProfile.getCellphone());
+        if (updateProfile.getBirthday() != null) profile.get().setBirthday(updateProfile.getBirthday());
+        if (updateProfile.getHeight() != 0) profile.get().setHeight(updateProfile.getHeight());
+        if (updateProfile.getPosition() != null) profile.get().setPosition(updateProfile.getPosition());
+        if (updateProfile.getOpen() != null) profile.get().setOpen(updateProfile.getOpen());
+
+        this.profileRepository.save(profile.get());
+
+        appUser.get().setProfile(profile.get());
+        this.userRepository.save(appUser.get());
+
+        return ProfileDto.fromModel(profile.get());
     }
 }

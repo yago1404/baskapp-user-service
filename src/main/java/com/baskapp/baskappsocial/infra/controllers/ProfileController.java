@@ -2,6 +2,7 @@ package com.baskapp.baskappsocial.infra.controllers;
 
 import com.baskapp.baskappsocial.application.services.ProfileService;
 import com.baskapp.baskappsocial.data.dtos.request.CreateProfileDto;
+import com.baskapp.baskappsocial.data.dtos.request.UpdateProfileDto;
 import com.baskapp.baskappsocial.data.dtos.response.ProfileDto;
 import com.baskapp.baskappsocial.data.dtos.response.ResponseBodyDto;
 import com.baskapp.baskappsocial.data.models.User;
@@ -34,6 +35,15 @@ public class ProfileController {
         User user = (User) request.getAttribute("authenticatedUser");
         ProfileDto profileDto = this.profileService.createProfile(user, profile);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBodyDto<>("success", 200, profileDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBodyDto<>("success", 201, profileDto));
+    }
+
+    @PutMapping
+    @Authenticated
+    public ResponseEntity<ResponseBodyDto<ProfileDto>> updateProfile(HttpServletRequest request, @Valid @RequestBody UpdateProfileDto profile) {
+        User user = (User) request.getAttribute("authenticatedUser");
+        ProfileDto profileDto = this.profileService.changeProfile(user, profile);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto<>("success", 200, profileDto));
     }
 }

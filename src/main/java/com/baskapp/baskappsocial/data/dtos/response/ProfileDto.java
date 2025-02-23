@@ -1,7 +1,6 @@
 package com.baskapp.baskappsocial.data.dtos.response;
 
 import com.baskapp.baskappsocial.data.models.Profile;
-import com.baskapp.baskappsocial.data.models.User;
 import com.baskapp.baskappsocial.data.models.enums.PlayerPosition;
 import com.baskapp.baskappsocial.data.models.enums.UserRule;
 import lombok.AllArgsConstructor;
