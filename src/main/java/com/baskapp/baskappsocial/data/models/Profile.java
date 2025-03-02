@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -44,4 +46,10 @@ public class Profile {
 
     @OneToOne(mappedBy = "profile")
     private User user;
+
+    @ManyToMany(mappedBy = "players")
+    private List<Team> teams = new ArrayList<>();
+
+    @OneToMany(mappedBy = "coach")
+    private List<Team> coachingTeams = new ArrayList<>();
 }
