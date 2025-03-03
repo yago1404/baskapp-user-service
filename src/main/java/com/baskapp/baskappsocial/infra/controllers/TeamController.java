@@ -21,16 +21,6 @@ public class TeamController {
     private TeamService teamService;
 
     @Authenticated
-    @PostMapping
-    public ResponseEntity<ResponseBodyDto<TeamDto>> createTeam(HttpServletRequest request, @Valid @RequestBody CreateTeamDto dto) {
-        User user = (User) request.getAttribute("authenticatedUser");
-
-        TeamDto team = teamService.createTeam(user, dto);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBodyDto<>("created", 201, team));
-    }
-
-    @Authenticated
     @GetMapping("/my-teams")
     public ResponseEntity<ResponseBodyDto<TeamsDto>> getMyTeams(HttpServletRequest request) {
         User user = (User) request.getAttribute("authenticatedUser");
@@ -38,5 +28,15 @@ public class TeamController {
         TeamsDto teams = teamService.getMyTeams(user);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto<>("success", 200, teams));
+    }
+
+    @Authenticated
+    @PostMapping
+    public ResponseEntity<ResponseBodyDto<TeamDto>> createTeam(HttpServletRequest request, @Valid @RequestBody CreateTeamDto dto) {
+        User user = (User) request.getAttribute("authenticatedUser");
+
+        TeamDto team = teamService.createTeam(user, dto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBodyDto<>("created", 201, team));
     }
 }
