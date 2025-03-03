@@ -3,6 +3,7 @@ package com.baskapp.baskappsocial.infra.controllers;
 import com.baskapp.baskappsocial.application.services.TeamService;
 import com.baskapp.baskappsocial.data.dtos.request.AddPlayerDto;
 import com.baskapp.baskappsocial.data.dtos.request.CreateTeamDto;
+import com.baskapp.baskappsocial.data.dtos.request.UpdateTeamDto;
 import com.baskapp.baskappsocial.data.dtos.response.ResponseBodyDto;
 import com.baskapp.baskappsocial.data.dtos.response.TeamDto;
 import com.baskapp.baskappsocial.data.dtos.response.TeamsDto;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/team")
@@ -42,12 +45,22 @@ public class TeamController {
     }
 
     @Authenticated
-    @PostMapping("/player")
+    @PutMapping("/player")
     public ResponseEntity<ResponseBodyDto<TeamDto>> addPlayer(HttpServletRequest request, @Valid @RequestBody AddPlayerDto dto) {
         User user = (User) request.getAttribute("authenticatedUser");
 
         TeamDto team = this.teamService.addPlayerToTeam(user, dto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto<>("success", 201, team));
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto<>("success", 200, team));
+    }
+
+    @Authenticated
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseBodyDto<TeamDto>> changeTeam(HttpServletRequest request, @PathVariable UUID id, @Valid @RequestBody UpdateTeamDto dto) {
+        User user = (User) request.getAttribute("authenticatedUser");
+
+        TeamDto team = this.teamService.changeTeam(user, id, dto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto<>("success", 200, team));
     }
 }

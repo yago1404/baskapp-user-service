@@ -2,6 +2,7 @@ package com.baskapp.baskappsocial.application.services;
 
 import com.baskapp.baskappsocial.data.dtos.request.AddPlayerDto;
 import com.baskapp.baskappsocial.data.dtos.request.CreateTeamDto;
+import com.baskapp.baskappsocial.data.dtos.request.UpdateTeamDto;
 import com.baskapp.baskappsocial.data.dtos.response.TeamDto;
 import com.baskapp.baskappsocial.data.dtos.response.TeamsDto;
 import com.baskapp.baskappsocial.data.models.Profile;
@@ -9,6 +10,7 @@ import com.baskapp.baskappsocial.data.models.Team;
 import com.baskapp.baskappsocial.data.models.User;
 import com.baskapp.baskappsocial.data.repositories.ProfileRepository;
 import com.baskapp.baskappsocial.data.repositories.TeamRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class TeamService {
@@ -27,7 +30,7 @@ public class TeamService {
 
     public TeamDto createTeam(User user, CreateTeamDto dto) {
         if (!user.getProfile().isCoaching()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "É preciso ser um técnico para criar um time");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "É preciso ser um técnico para criar um time");
         }
 
         Team team = new Team();
@@ -52,7 +55,7 @@ public class TeamService {
 
     public TeamDto addPlayerToTeam(User user, AddPlayerDto dto) {
         if (!user.getProfile().isCoaching()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "É preciso ser tecnico para adicionar um jogador");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "É preciso ser tecnico para adicionar um jogador");
         }
 
         Optional<Team> team = this.teamRepository.findById(dto.getTeamId());
@@ -62,7 +65,7 @@ public class TeamService {
         }
 
         if (!team.get().isTeamCoach(user.getProfile())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "É preciso ser técnico do time para adocionar um jogador");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "É preciso ser técnico do time para adocionar um jogador");
         }
 
         Optional<Profile> previousProfile = team.get()
@@ -89,5 +92,43 @@ public class TeamService {
         Team savedTeam = this.teamRepository.save(team.get());
 
         return TeamDto.fromModel(savedTeam);
+    }
+
+    public TeamDto changeTeam(User user, UUID teamId, @Valid UpdateTeamDto dto) {
+        if (!user.getProfile().isCoaching()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "É preciso ser um tecnico para atualizar o time");
+        }
+
+        Optional<Team> optionalTeam = this.teamRepository.findById(teamId);
+        if (optionalTeam.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Time não encontrado");
+        }
+
+        Team team = optionalTeam.get();
+
+        if (!team.isTeamCoach(user.getProfile())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "É preciso ser o tecnico do time para atualiza-lo");
+        }
+
+        if (dto.getCoachId() != null) this.associateProfileToCoachTeam(dto.getCoachId(), team);
+        if (dto.getName() != null) team.setName(dto.getName());
+
+        Team savedTeam = this.teamRepository.save(team);
+
+        return TeamDto.fromModel(savedTeam);
+    }
+
+    private void associateProfileToCoachTeam(UUID profileId, Team team) {
+        Optional<Profile> optionalProfile = this.profileRepository.findById(profileId);
+        if (optionalProfile.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Técnico não encontrado");
+        }
+
+        Profile profile = optionalProfile.get();
+        if (!profile.isCoaching()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Novo perfil precisa ser um tecnico");
+        }
+
+        team.setCoach(profile);
     }
 }

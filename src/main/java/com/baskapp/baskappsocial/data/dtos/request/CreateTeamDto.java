@@ -13,6 +13,4 @@ import lombok.Setter;
 public class CreateTeamDto {
     @NotNull(message = "Nome do time é obrigatório")
     String name;
-
-
 }
