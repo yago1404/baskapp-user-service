@@ -34,4 +34,8 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "coach_id")
     private Profile coach;
+
+    public boolean isTeamCoach(Profile profile) {
+        return this.coach.getId().equals(profile.getId());
+    }
 }

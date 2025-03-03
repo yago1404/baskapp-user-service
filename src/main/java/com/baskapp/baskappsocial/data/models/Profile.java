@@ -52,4 +52,8 @@ public class Profile {
 
     @OneToMany(mappedBy = "coach")
     private List<Team> coachingTeams = new ArrayList<>();
+
+    public Boolean isCoaching() {
+        return rule == UserRule.COACH || rule == UserRule.ADMIN;
+    }
 }

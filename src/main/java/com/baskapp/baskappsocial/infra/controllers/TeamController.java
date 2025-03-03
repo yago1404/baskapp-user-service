@@ -1,6 +1,7 @@
 package com.baskapp.baskappsocial.infra.controllers;
 
 import com.baskapp.baskappsocial.application.services.TeamService;
+import com.baskapp.baskappsocial.data.dtos.request.AddPlayerDto;
 import com.baskapp.baskappsocial.data.dtos.request.CreateTeamDto;
 import com.baskapp.baskappsocial.data.dtos.response.ResponseBodyDto;
 import com.baskapp.baskappsocial.data.dtos.response.TeamDto;
@@ -38,5 +39,15 @@ public class TeamController {
         TeamDto team = teamService.createTeam(user, dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseBodyDto<>("created", 201, team));
+    }
+
+    @Authenticated
+    @PostMapping("/player")
+    public ResponseEntity<ResponseBodyDto<TeamDto>> addPlayer(HttpServletRequest request, @Valid @RequestBody AddPlayerDto dto) {
+        User user = (User) request.getAttribute("authenticatedUser");
+
+        TeamDto team = this.teamService.addPlayerToTeam(user, dto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto<>("success", 201, team));
     }
 }

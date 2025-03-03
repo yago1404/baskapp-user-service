@@ -1,11 +1,13 @@
 package com.baskapp.baskappsocial.application.services;
 
+import com.baskapp.baskappsocial.data.dtos.request.AddPlayerDto;
 import com.baskapp.baskappsocial.data.dtos.request.CreateTeamDto;
 import com.baskapp.baskappsocial.data.dtos.response.TeamDto;
 import com.baskapp.baskappsocial.data.dtos.response.TeamsDto;
+import com.baskapp.baskappsocial.data.models.Profile;
 import com.baskapp.baskappsocial.data.models.Team;
 import com.baskapp.baskappsocial.data.models.User;
-import com.baskapp.baskappsocial.data.models.enums.UserRule;
+import com.baskapp.baskappsocial.data.repositories.ProfileRepository;
 import com.baskapp.baskappsocial.data.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,9 +22,12 @@ public class TeamService {
     @Autowired
     TeamRepository teamRepository;
 
+    @Autowired
+    ProfileRepository profileRepository;
+
     public TeamDto createTeam(User user, CreateTeamDto dto) {
-        if (user.getProfile().getRule() != UserRule.COACH && user.getProfile().getRule() != UserRule.ADMIN) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "É preciso ser um técnic para criar um time");
+        if (!user.getProfile().isCoaching()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "É preciso ser um técnico para criar um time");
         }
 
         Team team = new Team();
@@ -43,5 +48,46 @@ public class TeamService {
         List<Team> teams = optionalTeam.get();
 
         return TeamsDto.fromModels(teams);
+    }
+
+    public TeamDto addPlayerToTeam(User user, AddPlayerDto dto) {
+        if (!user.getProfile().isCoaching()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "É preciso ser tecnico para adicionar um jogador");
+        }
+
+        Optional<Team> team = this.teamRepository.findById(dto.getTeamId());
+
+        if (team.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Time não encontrado");
+        }
+
+        if (!team.get().isTeamCoach(user.getProfile())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "É preciso ser técnico do time para adocionar um jogador");
+        }
+
+        Optional<Profile> previousProfile = team.get()
+                .getPlayers()
+                .stream()
+                .filter(player -> player.getId().equals(dto.getProfileId()))
+                .findFirst();
+
+        if (previousProfile.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Esse jogador já esta associado ao time");
+        }
+
+        Optional<Profile> profile = this.profileRepository.findById(dto.getProfileId());
+
+        if (profile.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Perfil do jogador não encontrado");
+        }
+
+        if (profile.get().isCoaching()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Um tecnico nao pode ser associado como jogador");
+        }
+
+        team.get().getPlayers().add(profile.get());
+        Team savedTeam = this.teamRepository.save(team.get());
+
+        return TeamDto.fromModel(savedTeam);
     }
 }
