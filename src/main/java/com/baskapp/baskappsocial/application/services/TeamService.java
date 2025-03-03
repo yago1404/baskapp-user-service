@@ -65,7 +65,7 @@ public class TeamService {
         }
 
         if (!team.get().isTeamCoach(user.getProfile())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "É preciso ser técnico do time para adocionar um jogador");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "É preciso ser técnico do time para adicionar um jogador");
         }
 
         Optional<Profile> previousProfile = team.get()

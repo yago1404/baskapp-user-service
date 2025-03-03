@@ -45,7 +45,7 @@ public class TeamController {
     }
 
     @Authenticated
-    @PutMapping("/player")
+    @PostMapping("/player")
     public ResponseEntity<ResponseBodyDto<TeamDto>> addPlayer(HttpServletRequest request, @Valid @RequestBody AddPlayerDto dto) {
         User user = (User) request.getAttribute("authenticatedUser");
 
