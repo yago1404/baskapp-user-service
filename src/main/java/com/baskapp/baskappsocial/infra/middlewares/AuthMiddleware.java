@@ -46,7 +46,7 @@ public class AuthMiddleware {
             user = this.userRepository.findById(UUID.fromString(userId));
 
             if (user.isEmpty()) {
-                throw new Exception("Not found user");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário não encontrado");
             }
 
             request.setAttribute("authenticatedUser", user.get());
