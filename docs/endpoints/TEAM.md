@@ -273,6 +273,8 @@ Esse endpoint tem como paramtros obrigatórios: **teamId** e **profileId**
 
 Atualiza informacoes do time
 
+- **teamsId**: Id do time a ser alterado
+
 **headers**
 
 ```JSON
@@ -364,5 +366,97 @@ Atualiza informacoes do time
   "error": "Not Found",
   "message": "Técnico não encontrado",
   "path": "/team/c9af12d1-1ee8-49db-b2bb-3056c53b6f4c"
+}
+```
+
+---
+
+## DELETE /{teamId}/player/{playerId}
+
+Remove o jogador do time
+
+- **teamId**: id do time onde o player vai ser removido
+- **playerId**: id do jogador a ser removido
+
+**headers**
+
+```JSON
+{
+  "Authentication": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzBmMTAwNC1lMDUwLTRhNzgtYTY5ZC04ZTg0MjJhOGE4OTgiLCJleHAiOjE3Mzk3NDE3OTJ9.KyhHomsfqStpd3_4RY2OzUO65K7d8Z2WhDv6kTpxymc"
+}
+```
+
+**Sucesso** (200)
+
+```JSON
+{
+  "message": "success",
+  "statusCode": 200,
+  "data": {
+    "id": "c9af12d1-1ee8-49db-b2bb-3056c53b6f4c",
+    "name": "Lakers",
+    "players": [
+      {
+        "id": "73632e20-368d-4eec-bc25-67de611fc381",
+        "name": "Jogador 1",
+        "cellphone": "82988509560",
+        "birthday": "2000-04-14T00:00:00.000+00:00",
+        "height": 185,
+        "position": "POINT_GUARD",
+        "rule": "PLAYER",
+        "picture": null,
+        "open": true
+      }
+    ],
+    "coach": {
+      "id": "68a8cda3-b69d-4f65-b3ac-28ef85e56e6e",
+      "name": "Coach 1",
+      "cellphone": null,
+      "birthday": "2000-04-14T00:00:00.000+00:00",
+      "height": 0,
+      "position": null,
+      "rule": "COACH",
+      "picture": null,
+      "open": false
+    }
+  }
+}
+```
+
+**Erros**
+
+**Jogador nao pertence a esse time** (404)
+
+```JSON
+{
+  "timestamp": "2025-03-04T00:36:13.604+00:00",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Jogador nao pertence a esse time",
+  "path": "/team/c9af12d1-1ee8-49db-b2bb-3056c53b6f4c/player/73632e20-368d-4eec-bc25-67de611fc381"
+}
+```
+
+**Time nao encontrado** (404)
+
+```JSON
+{
+  "timestamp": "2025-03-04T00:42:41.359+00:00",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Time nao encontrado",
+  "path": "/team/c9af12d1-1ee8-49db-b2bb-3056c53b6f4a/player/73632e20-368d-4eec-bc25-67de611fc381"
+}
+```
+
+**É preciso ser o tecnico do time para remover um jogador** (403)
+
+```JSON
+{
+  "timestamp": "2025-03-04T00:43:44.981+00:00",
+  "status": 403,
+  "error": "Forbidden",
+  "message": "É preciso ser o tecnico do time para remover um jogador",
+  "path": "/team/c9af12d1-1ee8-49db-b2bb-3056c53b6f4c/player/73632e20-368d-4eec-bc25-67de611fc381"
 }
 ```

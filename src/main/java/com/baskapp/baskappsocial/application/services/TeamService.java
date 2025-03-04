@@ -131,4 +131,32 @@ public class TeamService {
 
         team.setCoach(profile);
     }
+
+    public TeamDto removePlayerFromTeam(User user, UUID playerId, UUID teamId) {
+        Optional<Team> optionalTeam = this.teamRepository.findById(teamId);
+        if (optionalTeam.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Time nao encontrado");
+        }
+
+        Team team = optionalTeam.get();
+
+        if (!user.getProfile().isCoaching() || !team.isTeamCoach(user.getProfile())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "É preciso ser o tecnico do time para remover um jogador");
+        }
+
+        Optional<Profile> optionalProfile = team
+                .getPlayers()
+                .stream()
+                .filter(player -> player.getId().equals(playerId))
+                .findFirst();
+
+        if (optionalProfile.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogador nao pertence a esse time");
+        }
+
+        team.getPlayers().remove(optionalProfile.get());
+
+        this.teamRepository.save(team);
+        return TeamDto.fromModel(team);
+    }
 }

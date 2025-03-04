@@ -63,4 +63,18 @@ public class TeamController {
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto<>("success", 200, team));
     }
+
+    @Authenticated
+    @DeleteMapping("/{teamId}/player/{playerId}")
+    public ResponseEntity<ResponseBodyDto<TeamDto>> removePlayer(
+            HttpServletRequest request,
+            @PathVariable UUID playerId,
+            @PathVariable UUID teamId
+    ) {
+        User user = (User) request.getAttribute("authenticatedUser");
+
+        TeamDto team = this.teamService.removePlayerFromTeam(user, playerId, teamId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto<>("success", 200, team));
+    }
 }
